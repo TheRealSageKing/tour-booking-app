@@ -2,9 +2,10 @@ const express = require("express");
 const config = require("./config/config");
 
 const app = express();
+app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-	res.send("Hello world");
+	res.render("pages/index");
 });
 
 app.listen(config.port, () => {
