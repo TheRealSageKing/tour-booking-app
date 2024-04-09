@@ -1,5 +1,6 @@
 const express = require("express");
 const config = require("./config/config");
+const bodyParser = require("body-parser");
 
 const router = require("./modules/Home/HomeRoute");
 const AuthRouter = require("./modules/Auth/AuthRoute");
@@ -8,7 +9,9 @@ const Database = require("./config/database");
 const UserSchema = require("./schemas/UserSchema");
 
 const app = express();
+
 app.set("view engine", "ejs");
+app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/")]);
 
