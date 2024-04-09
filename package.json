@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon app.js"
+		"dev": "nodemon app.js",
+		"tailwind-watch": "npx tailwindcss -i ./public/src/tailwind.css -o ./public/dist/css/style.css --watch"
 	},
 	"keywords": [],
 	"author": "",
