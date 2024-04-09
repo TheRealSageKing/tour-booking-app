@@ -9,6 +9,10 @@ app.get("/", (req, res) => {
 	res.render("pages/index");
 });
 
+app.get("/backend", (req, res) => {
+	res.render("pages/backend/index");
+});
+
 app.listen(config.port, () => {
 	console.log(`app running on http:/\/\localhost:${config.port}`);
 });
