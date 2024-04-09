@@ -1,6 +1,6 @@
 const express = require("express");
 const config = require("./config/config");
-const router = require("./modules/Home/homeRoute");
+const router = require("./modules/Home/HomeRoute");
 
 const app = express();
 app.set("view engine", "ejs");
