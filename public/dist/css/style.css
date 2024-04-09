@@ -1255,6 +1255,10 @@ video {
 }
 
 @media (min-width: 640px) {
+  .sm\:visible {
+    visibility: visible;
+  }
+
   .sm\:mx-auto {
     margin-left: auto;
     margin-right: auto;
@@ -1270,6 +1274,10 @@ video {
 
   .sm\:flex {
     display: flex;
+  }
+
+  .sm\:hidden {
+    display: none;
   }
 
   .sm\:h-9 {
@@ -1318,6 +1326,10 @@ video {
 @media (min-width: 768px) {
   .md\:grid {
     display: grid;
+  }
+
+  .md\:hidden {
+    display: none;
   }
 
   .md\:h-12 {
