@@ -11,4 +11,4 @@ const TourSchema = new mongoose.Schema({
 	updatedAt: { type: Date, default: () => Date.now() },
 });
 
-module.exports = mongoose.model("Tour", TourSchema);
+module.exports.Tour = mongoose.model("Tour", TourSchema);
