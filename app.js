@@ -10,6 +10,7 @@ const UserSchema = require("./schemas/UserSchema");
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/")]);
 
 app.use("/", router);
 app.use("/auth", AuthRouter);
