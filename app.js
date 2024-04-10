@@ -9,6 +9,7 @@ const Database = require("./config/database");
 const UserSchema = require("./schemas/UserSchema");
 const session = require("express-session");
 const DashboardRoute = require("./modules/Account/Dashboard/DashboardRoute");
+const AuthGuard = require("./middlewares/AuthGuard");
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/")]);
 
 app.use("/", router);
 app.use("/auth", AuthRouter);
-app.use("/account", DashboardRoute);
+app.use("/account", AuthGuard, DashboardRoute);
 
 app.listen(config.port, () => {
 	console.log(`app running on http:/\/\localhost:${config.port}`);
