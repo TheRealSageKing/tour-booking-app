@@ -23,7 +23,7 @@ app.use(
 		saveUninitialized: false,
 		cookie: {
 			secure: config.environment == "production" || false,
-			maxAge: 60000,
+			maxAge: 3600000, // 1hour,
 		},
 	})
 );
