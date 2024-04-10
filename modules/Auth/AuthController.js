@@ -7,7 +7,26 @@ class AuthController {
 		res.render("pages/auth/signup");
 	}
 
-	createUser() {}
+	async createUser(req, res, next) {
+		const { name, email, password } = req.body;
+		try {
+			console.log(req.body);
+			const user = await User.create({
+				name,
+				email,
+				password,
+			});
+
+			if (!user) {
+				throw Error("User account was not created");
+			}
+
+			res.status(201).json({ success: true, message: "Account was created successfully", data: user });
+		} catch (error) {
+			// console.log(error);
+			res.status(400).json({ success: false, message: error.message });
+		}
+	}
 
 	login(req, res, next) {
 		res.render("pages/auth/login");
