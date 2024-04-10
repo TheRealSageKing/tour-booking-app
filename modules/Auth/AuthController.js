@@ -1,6 +1,4 @@
-const { Booking } = require("../../schemas/BookingSchema");
-const { User } = require("../../schemas/UserSchema");
-const bcrypt = require("bcrypt");
+const User = require("../../schemas/UserSchema");
 
 class AuthController {
 	signUp(req, res, next) {
@@ -36,18 +34,20 @@ class AuthController {
 		try {
 			const { email, password } = req.body;
 
-			const user = await User.findOne({ email });
+			const user = await User.findOne({ email }).exec();
 
 			if (!user) {
 				return res.status(400).json({ success: false, message: "Invalid email or password" });
 			}
 
-			const isValidOwner = await user.comparePassword(password);
-			if (!isValidOwner) {
-				return res.status(400).json({ success: false, message: "Invalid email or password" });
-			}
+			user.comparePassword(password, (err, isValidOwner) => {
+				if (!isValidOwner) {
+					return res.status(400).json({ success: false, message: "Invalid email or password" });
+				}
+			});
 
 			req.session.user = user;
+
 			return res.status(200).json({ success: true, message: "success" });
 		} catch (error) {
 			next(error);
