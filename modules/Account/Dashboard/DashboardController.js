@@ -1,6 +1,7 @@
 class DashboardController {
 	index(req, res, next) {
-		res.render("pages/backend/index");
+		const user = req.session.user;
+		res.render("pages/backend/index", { user });
 	}
 }
 module.exports = new DashboardController();
