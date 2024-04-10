@@ -12,6 +12,7 @@ const BookingSchema = new mongoose.Schema({
 	},
 	quantity: Number,
 	totalCost: Number,
+	attendees: [String],
 	isPending: Boolean,
 	bookingId: String,
 	createdAt: {

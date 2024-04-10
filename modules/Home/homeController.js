@@ -9,6 +9,10 @@ class HomeController {
 	contact(req, res, next) {
 		res.render("pages/contact");
 	}
+
+	bookTour(req, res, next) {
+		res.render("pages/book-tour");
+	}
 }
 
 module.exports = new HomeController();
