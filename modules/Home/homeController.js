@@ -1,3 +1,6 @@
+const config = require("../../config/config");
+const Tour = require("../../schemas/TourSchema");
+
 class HomeController {
 	index(req, res, next) {
 		return res.render("pages/index");
@@ -10,8 +13,10 @@ class HomeController {
 		res.render("pages/contact");
 	}
 
-	bookTour(req, res, next) {
-		res.render("pages/book-tour");
+	async tours(req, res, next) {
+		const tours = await Tour.find({ isActive: 1 }).exec();
+		console.log(tours);
+		res.render("pages/tours", { tours, baseUrl: config.baseUrl });
 	}
 }
 

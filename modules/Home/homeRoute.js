@@ -6,6 +6,6 @@ const router = express.Router();
 router.get("/", homeController.index);
 router.get("/about", homeController.about);
 router.get("/contact", homeController.contact);
-router.get("/book-tour", homeController.bookTour);
+router.get("/tours", homeController.tours);
 
 module.exports = router;
