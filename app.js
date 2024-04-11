@@ -11,6 +11,7 @@ const session = require("express-session");
 const DashboardRoute = require("./modules/Account/Dashboard/DashboardRoute");
 const AuthGuard = require("./middlewares/AuthGuard");
 const BookingRoute = require("./modules/Account/Booking/BookingRoute");
+const TourRoute = require("./modules/Account/Tour/TourRoute");
 
 const app = express();
 
@@ -30,10 +31,12 @@ app.use(
 );
 
 app.use(express.static(__dirname + "/public"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/")]);
 
 app.use("/", router);
 app.use("/auth", AuthRouter);
+app.use("/account/tours", TourRoute);
 app.use("/account", AuthGuard, DashboardRoute);
 app.use("/account", AuthGuard, BookingRoute);
 

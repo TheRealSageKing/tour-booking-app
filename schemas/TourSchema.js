@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const TourSchema = new mongoose.Schema({
 	name: String,
+	description: String,
 	country: String,
 	locations: [String],
 	images: [String],

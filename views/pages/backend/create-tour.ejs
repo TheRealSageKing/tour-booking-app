@@ -1,0 +1,124 @@
+<%- include('../../partials/backend/header') %>
+<div class="container px-6 mx-auto grid">
+	<h2 class="my-6 text-2xl font-semibold text-gray-700">Create Tour</h2>
+	<!-- Cards -->
+	<div class="sm:w-full sm:max-w-xxl">
+		<!-- Card -->
+		<div class="items-center p-4 bg-white rounded-lg shadow-xs">
+			<p class="border-l-4 p-4 mb-10" id="alert-pane"></p>
+
+			<form class="space-y-4 w-full" action="#" method="POST" id="form" enctype="multipart/form-data">
+				<div>
+					<label for="name" class="form-label">Title</label>
+					<div class="mt-2">
+						<input id="name" name="name" type="text" autocomplete="name" required class="form-input" />
+					</div>
+				</div>
+
+				<div>
+					<label for="description" class="form-label">Description</label>
+					<div class="mt-2">
+						<textarea name="description" id="description" cols="30" rows="10" class="block px-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+					</div>
+				</div>
+
+				<div class="grid md:grid-cols-2 gap-6">
+					<div>
+						<label for="country" class="form-label">Country</label>
+						<div class="mt-2">
+							<select name="country" id="country" class="form-select">
+								<option value="">country 1</option>
+								<option value="">country 2</option>
+								<option value="">country 3</option>
+								<option value="">country 4</option>
+								<option value="">country 5</option>
+							</select>
+						</div>
+					</div>
+					<div>
+						<label for="locations" class="form-label">Locations</label>
+						<div class="mt-2">
+							<input id="locations" name="locations" type="text" autocomplete="locations" required class="form-input" />
+						</div>
+					</div>
+				</div>
+
+				<div class="grid md:grid-cols-3 gap-6">
+					<div>
+						<label for="cost" class="form-label">Ticket Cost</label>
+						<div class="mt-2">
+							<input id="cost" name="cost" type="number" min="0" required class="form-input" />
+						</div>
+					</div>
+					<div>
+						<label for="discount" class="form-label">Discount</label>
+						<div class="mt-2">
+							<input id="discount" name="discount" type="number" min="0" autocomplete="discount" required class="form-input" />
+						</div>
+					</div>
+					<div>
+						<label for="screenshots" class="form-label">Screenshots</label>
+						<div class="mt-2">
+							<input id="screenshots" multiple name="screenshots" type="file" autocomplete="current-password" required class="form-input" />
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create my account</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$("#alert-pane").hide();
+
+	$(document).on("submit", "#form", function (e) {
+		e.preventDefault();
+		const formData = new FormData();
+
+		$.each($(this).serializeArray(), (idx, field) => {
+			const { name, value } = field;
+			if (name !== "screenshots") {
+				formData.append(name, value);
+			}
+		});
+
+		const files = $("#screenshots").prop("files");
+		for (let i = 0; i < files.length; i++) {
+			formData.append("screenshots", files[i]);
+		}
+
+		$.ajax({
+			url: "/account/tours/create",
+			type: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				const { success, message } = response;
+				if (success) {
+					$("#alert-pane").removeClass("bg-orange-100  border-orange-500 text-orange-700").addClass("bg-green-100  border-green-500 text-green-700").html(message).show();
+
+					setTimeout(function () {
+						$("#alert-pane").fadeOut();
+						window.location.href = "/account/tours";
+					}, 3000);
+				}
+			},
+			error: function (error) {
+				const { success, message } = error.responseJSON;
+				$("#alert-pane").addClass("bg-orange-100  border-orange-500 text-orange-700").removeClass("bg-green-100  border-green-500 text-green-700").html(message).show();
+
+				setTimeout(function () {
+					$("#alert-pane").fadeOut();
+					window.location.href = "/account/tours";
+				}, 3000);
+			},
+		});
+	});
+</script>
+<%- include('../../partials/backend/footer') %>
