@@ -6,7 +6,6 @@ const router = require("./modules/Home/HomeRoute");
 const AuthRouter = require("./modules/Auth/AuthRoute");
 
 const Database = require("./config/database");
-const UserSchema = require("./schemas/UserSchema");
 const session = require("express-session");
 const DashboardRoute = require("./modules/Account/Dashboard/DashboardRoute");
 const AuthGuard = require("./middlewares/AuthGuard");
@@ -32,7 +31,7 @@ app.use(
 
 app.use(express.static(__dirname + "/public"));
 app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/")]);
+app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/"), express.static(__dirname + "/node_modules/@fortawesome/fontawesome-free/")]);
 
 app.use("/", router);
 app.use("/auth", AuthRouter);

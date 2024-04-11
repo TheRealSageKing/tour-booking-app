@@ -42,7 +42,15 @@
 						<td class="px-4 py-3 text-xs">
 							<span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full"> Approved </span>
 						</td>
-						<td class="px-4 py-3 text-sm">6/10/2020</td>
+						<td class="px-4 py-3 text-sm">
+							<div class="inline-flex rounded-md shadow-sm" role="group">
+								<a type="button" href="/account/tours/<%= tour._id %>/edit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"><i class="fa-regular fa-pen-to-square"></i> </a>
+								<button type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"><i class="fa-regular fa-trash-can"></i></button>
+								<button type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+									<i class="fa-regular fa-eye-slash"></i>
+								</button>
+							</div>
+						</td>
 					</tr>
 					<% }); } else { %>
 					<tr class="text-gray-700">

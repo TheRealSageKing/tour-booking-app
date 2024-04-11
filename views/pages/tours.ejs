@@ -1,0 +1,30 @@
+<%- include('../partials/frontend/header') -%>
+
+<section class="bg-white pt-44">
+	<div class="items-center max-w-screen-xl px-4 py-8 mx-auto">
+		<div class="grid md:grid-cols-4 gap-10 sm:grid-cols-2 items-center justify-start z-0">
+			<% if (tours && tours.length > 0 ) { tours.forEach((tour) => { %> <% let rand = Math.floor(Math.random() * tour.images.length); let image = tour.images[rand]; console.log(image) %>
+			<div class="group relative flex flex-col overflow-hidden rounded-lg px-4 pb-2 pt-48 mb-4 h-80">
+				<img src="<%= image ? baseUrl + image : '' %>" alt="" class="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
+				<div class="absolute inset-0 bg-gradient-to-b from-gray-900/25 to-gray-900/5"></div>
+				<h3 class="z-10 text-2xl font-medium text-white absolute top-0 left-0 p-4 xs:text-xl md:text-3xl drop-shadow"><%= tour.country %></h3>
+
+				<div class="relative text-white px-6 pb-2 mt-6">
+					<div>
+						<span class="block opacity-75 -mb-1 drop-shadow-lg">Outdoor</span>
+						<span class="block -mb-1 drop-shadow-lg"><%= tour.name %></span>
+					</div>
+					<div class="flex justify-between mt-4">
+						<a href="#" class="block bg-purple-600 rounded-full text-white-500 text-xs font-bold px-3 py-2 leading-none flex items-center">Learn More</a>
+						<a href="#" class="block bg-white rounded-full text-purple-500 text-xs font-bold px-3 py-2 leading-none flex items-center">Book Tour</a>
+					</div>
+				</div>
+			</div>
+			<%}); }else { %>
+			<p>Coming Soon</p>
+			<% } %>
+		</div>
+	</div>
+</section>
+
+<%- include('../partials/frontend/footer') -%>

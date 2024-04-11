@@ -8,6 +8,10 @@ const TourSchema = new mongoose.Schema({
 	images: [String],
 	cost: Number,
 	discount: Number,
+	isActive: {
+		type: Boolean,
+		default: true,
+	},
 	createdAt: { type: Date, default: () => Date.now(), immutable: true },
 	updatedAt: { type: Date, default: () => Date.now() },
 });
