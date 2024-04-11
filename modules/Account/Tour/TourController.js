@@ -6,7 +6,6 @@ class TourController {
 	//list all the available tours
 	async index(req, res, next) {
 		const tours = await Tour.find().exec();
-		console.log(tours);
 		res.render("pages/backend/list-tours", { tours, baseUrl: config.baseUrl });
 	}
 
@@ -42,10 +41,8 @@ class TourController {
 
 	async delete(req, res, next) {
 		try {
-			const tour = await Tour.findOne({ _id: req.params.id }).exec();
-			await tour.delete();
-
-			res.redirect("/account/tours");
+			await Tour.deleteOne({ _id: req.params.id }).exec();
+			res.status(200).json({ success: true, message: "Tour was deleted successfully" });
 		} catch (error) {
 			next(error);
 		}
@@ -68,24 +65,47 @@ class TourController {
 				throw new Error("Tour was not found");
 			}
 
-			const files = req.files;
-			const screenshots = files.map((file) => file.path);
-			const location = locations.split(",");
+			if (req.files && req.files.length > 0) {
+				const files = req.files;
+				const screenshots = files.map((file) => file.path);
+				tour.images = screenshots;
+			}
 
 			//TODO delete previous images
+			const location = req.body.locations.split(",");
 
 			tour.name = req.body.name;
 			tour.description = req.body.description;
 			tour.country = req.body.country;
-			tour.images = screenshots;
+
 			tour.locations = location;
 			tour.cost = req.body.cost;
 			tour.discount = req.body.discount;
 
 			tour.save();
 
-			res.render("pages/backend/create-tour", { success: true, message: "Tour was updated successfully" });
+			res.status(200).json({ success: true, message: "Tour was updated successfully", countries });
 		} catch (error) {
+			console.log(error);
+			next(error);
+		}
+	}
+
+	async toggleActive(req, res, next) {
+		try {
+			const tour = await Tour.findOne({ _id: req.params.id }).exec();
+
+			if (!tour) {
+				throw new Error("Tour was not found");
+			}
+
+			tour.isActive = req.body.isActive;
+
+			tour.save();
+
+			res.status(200).json({ success: true, message: "Tour was updated successfully", countries });
+		} catch (error) {
+			console.log(error);
 			next(error);
 		}
 	}

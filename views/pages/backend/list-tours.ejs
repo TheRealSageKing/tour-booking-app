@@ -8,6 +8,7 @@
 			<a href="/account/tours/create" class="bg-purple-600 text-white p-2 rounded-lg">Add Tour</a>
 		</div>
 		<div class="w-full overflow-x-auto">
+			<p id="alert-pane" class="border-l-4 p-4 mb-10"></p>
 			<table class="w-full whitespace-no-wrap">
 				<thead>
 					<tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50">
@@ -35,19 +36,27 @@
 						</td>
 						<td class="px-4 py-3 text-sm">
 							<% if(tour.discount > 0){ %>
-							<span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full line-through"> NGN<%= tour.cost %> </span>
+							<span class="danger-badge"> NGN<%= tour.cost %> </span>
 							<% } %>
-							<span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-0 rounded-full"> NGN<%= (tour.cost - tour.discount) < 0 ? 0 :(tour.cost - tour.discount) %> </span>
+							<span class="success-badge"> NGN<%= (tour.cost - tour.discount) < 0 ? 0 :(tour.cost - tour.discount) %> </span>
 						</td>
 						<td class="px-4 py-3 text-xs">
-							<span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full"> Approved </span>
+							<% if(tour.isActive == 1){ %>
+							<span class="success-badge"> Active </span>
+							<%}else{ %>
+							<span class="danger-badge"> Not Active </span>
+							<%}%>
 						</td>
 						<td class="px-4 py-3 text-sm">
 							<div class="inline-flex rounded-md shadow-sm" role="group">
-								<a type="button" href="/account/tours/<%= tour._id %>/edit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"><i class="fa-regular fa-pen-to-square"></i> </a>
-								<button type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"><i class="fa-regular fa-trash-can"></i></button>
-								<button type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700">
+								<a type="button" href="/account/tours/<%= tour._id %>/edit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white"><i class="fa-regular fa-pen-to-square"></i> </a>
+								<button type="button" data-id="<%= tour._id %>" onclick="deleteTour(this)" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white"><i class="fa-regular fa-trash-can"></i></button>
+								<button type="button" class="btn" data-id="<%= tour._id %>" data-status="<%= tour.isActive %>" onclick="toggleActive(this)">
+									<% if(tour.isActive == 1){ %>
 									<i class="fa-regular fa-eye-slash"></i>
+									<%}else{ %>
+									<i class="fa-regular fa-eye"></i>
+									<%}%>
 								</button>
 							</div>
 						</td>
@@ -64,4 +73,76 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$("#alert-pane").hide();
+	function toggleActive(el) {
+		const id = $(el).data("id");
+		const isActive = $(el).data("status");
+
+		$.ajax({
+			url: "/account/tours/" + id + "/toggle-active",
+			method: "POST",
+			data: JSON.stringify({ isActive: !isActive }),
+			headers: {
+				Accept: "application/json; charset=utf-8",
+				"Content-Type": "application/json; charset=utf-8",
+			},
+			success: function (data) {
+				const { success, message } = data;
+				if (success) {
+					$("#alert-pane").removeClass("bg-orange-100  border-orange-500 text-orange-700").addClass("bg-green-100  border-green-500 text-green-700").html(message).show();
+
+					setTimeout(function () {
+						$("#alert-pane").fadeOut();
+						window.location.href = "/account/tours";
+					}, 1000);
+				}
+				throw error(message);
+			},
+			error: function (data, status, error) {
+				const { success, message } = data.responseJSON;
+
+				$("#alert-pane").removeClass("bg-green-100  border-green-500 text-green-700").addClass("bg-orange-100  border-orange-500 text-orange-700").html(message).show();
+
+				setTimeout(function () {
+					$("#alert-pane").fadeOut();
+				}, 3000);
+			},
+		});
+	}
+	function deleteTour(el) {
+		const id = $(el).data("id");
+
+		$.ajax({
+			url: "/account/tours/" + id + "/delete",
+			method: "POST",
+			headers: {
+				Accept: "application/json; charset=utf-8",
+				"Content-Type": "application/json; charset=utf-8",
+			},
+			success: function (data) {
+				const { success, message } = data;
+				if (success) {
+					$("#alert-pane").removeClass("bg-orange-100  border-orange-500 text-orange-700").addClass("bg-green-100  border-green-500 text-green-700").html(message).show();
+
+					setTimeout(function () {
+						$("#alert-pane").fadeOut();
+						window.location.href = "/account/tours";
+					}, 1000);
+				}
+				throw error(message);
+			},
+			error: function (data, status, error) {
+				const { success, message } = data.responseJSON;
+
+				$("#alert-pane").removeClass("bg-green-100  border-green-500 text-green-700").addClass("bg-orange-100  border-orange-500 text-orange-700").html(message).show();
+
+				setTimeout(function () {
+					$("#alert-pane").fadeOut();
+				}, 3000);
+			},
+		});
+	}
+</script>
 <%- include('../../partials/backend/footer') %>

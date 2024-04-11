@@ -13,3 +13,15 @@
 .form-label {
 	@apply block text-sm font-medium leading-6 text-gray-900;
 }
+
+.success-badge {
+	@apply px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full;
+}
+
+.danger-badge {
+	@apply px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full;
+}
+
+.btn {
+	@apply inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white;
+}
