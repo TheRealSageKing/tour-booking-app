@@ -1,13 +1,13 @@
 const express = require("express");
-const homeController = require("./HomeController");
+const HomeController = require("./HomeController");
 
 const router = express.Router();
 
-router.get("/", homeController.index);
-router.get("/about", homeController.about);
-router.get("/contact", homeController.contact);
-router.get("/tours", homeController.tours);
-router.get("/tours/:id", homeController.tourDetail);
-router.get("/book-tour", homeController.bookTour);
+router.get("/", HomeController.index);
+router.get("/about", HomeController.about);
+router.get("/contact", HomeController.contact);
+router.get("/tours", HomeController.tours);
+router.get("/tours/:id", HomeController.tourDetail);
+router.get("/book-tour", HomeController.bookTour);
 
 module.exports = router;
