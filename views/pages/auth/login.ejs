@@ -37,15 +37,23 @@
 </div>
 <script type="text/javascript">
 	$("#alert-pane").hide();
-	$(document).ready(function () {});
+	$(document).ready(function () {
+		
+	});
 
 	$(document).on("submit", "#login-form", function (e) {
 		e.preventDefault();
 		const data = {};
+		
+		let params = new URL(document.location.toString()).searchParams;
+		let redirect = params.get("redirect");
+	
+
 		$.each($(this).serializeArray(), (idx, field) => {
 			const { name, value } = field;
 			data[name] = value;
 		});
+
 
 		$.ajax({
 			url: "/auth/login",
@@ -62,7 +70,7 @@
 
 					setTimeout(function () {
 						$("#alert-pane").fadeOut();
-						window.location.href = "/account/dashboard";
+						window.location.href = redirect? redirect:"/account/dashboard";
 					}, 3000);
 				}
 				throw error(message);

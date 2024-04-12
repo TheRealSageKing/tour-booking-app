@@ -8,9 +8,13 @@ const AuthRouter = require("./modules/Auth/AuthRoute");
 const Database = require("./config/database");
 const session = require("express-session");
 const DashboardRoute = require("./modules/Admin/Dashboard/DashboardRoute");
+const UserDashboardRoute = require("./modules/User/Dashboard/DashboardRoute");
 const AuthGuard = require("./middlewares/AuthGuard");
 const BookingRoute = require("./modules/Admin/Booking/BookingRoute");
+const UserBookingRoute = require("./modules/User/Booking/BookingRoute");
 const TourRoute = require("./modules/Admin/Tour/TourRoute");
+const AuthUser = require("./middlewares/AuthUser");
+const AuthAdmin = require("./middlewares/AuthAdmin");
 
 const app = express();
 
@@ -35,9 +39,15 @@ app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/"), ex
 
 app.use("/", router);
 app.use("/auth", AuthRouter);
-app.use("/account/tours", TourRoute);
-app.use("/account", AuthGuard, DashboardRoute);
-app.use("/account", AuthGuard, BookingRoute);
+
+//Admin Account Routes
+app.use("/account", AuthGuard, AuthAdmin, DashboardRoute);
+app.use("/account", AuthGuard, AuthAdmin, BookingRoute);
+app.use("/account/tours", AuthGuard, AuthAdmin, TourRoute);
+
+//User Account Routes
+app.use("/user", UserDashboardRoute);
+app.use("/user", UserBookingRoute);
 
 app.listen(config.port, () => {
 	console.log(`app running on http:/\/\localhost:${config.port}`);
