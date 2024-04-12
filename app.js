@@ -3,7 +3,7 @@ const config = require("./config/config");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const router = require("./modules/Home/homeRoute");
+const HomeRoute = require("./modules/Home/HomeRoute");
 const AuthRouter = require("./modules/Auth/AuthRoute");
 
 const Database = require("./config/database");
@@ -44,7 +44,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use("/assets", [express.static(__dirname + "/node_modules/jquery/dist/"), express.static(__dirname + "/node_modules/@fortawesome/fontawesome-free/")]);
 app.use(cors());
 
-app.use("/", router);
+app.use("/", HomeRoute);
 app.use("/auth", AuthRouter);
 
 //Admin Account Routes
