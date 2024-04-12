@@ -5,8 +5,11 @@
 			<span class="self-center text-xl font-semibold whitespace-nowrap">Tour World</span>
 		</a>
 		<div class="flex items-center lg:order-2">
+			<% if (typeof user === 'undefined') { %>
 			<a href="/auth/login" class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 :bg-gray-700 focus:outline-none">Log in</a>
-
+			<% }else{ %>
+				<a href="<%= user.type == 1 ? '/account/dashboard':'/user/dashboard' %> " class="text-gray-800 hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 :bg-gray-700 focus:outline-none">My Account</a>
+			<% } %>
 			<a href="/user/book-tour" class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Book Tour</a>
 			<button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 :bg-gray-700 :ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
 				<span class="sr-only">Open main menu</span>
@@ -17,16 +20,16 @@
 		<div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
 			<ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
 				<li>
-					<a href="/" class="block py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0" aria-current="page">Home</a>
+					<a href="/" class="block py-2 pl-3 pr-4  bg-purple-700 rounded lg:bg-transparent lg:p-0 <%= active == '/' ?'text-purple-700':'text-gray-700' %>" aria-current="page">Home</a>
 				</li>
 				<li>
-					<a href="/tours" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Locations</a>
+					<a href="/tours" class="block py-2 pl-3 pr-4 <%= active == '/tours' ?'text-purple-700':'text-gray-700' %> border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Locations</a>
 				</li>
 				<li>
-					<a href="/about" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">About</a>
+					<a href="/about" class="block py-2 pl-3 pr-4 <%= active == '/about' ?'text-purple-700':'text-gray-700' %> border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">About</a>
 				</li>
 				<li>
-					<a href="/contact" class="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Contact</a>
+					<a href="/contact" class="block py-2 pl-3 pr-4 <%= active == '/contact' ?'text-purple-700':'text-gray-700' %> border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Contact</a>
 				</li>
 			</ul>
 		</div>

@@ -3,26 +3,31 @@ const Tour = require("../../schemas/TourSchema");
 
 class HomeController {
 	index(req, res, next) {
-		return res.render("pages/index");
+		const user = req.session.user;
+		return res.render("pages/index", { user, active: "/" });
 	}
 
 	about(req, res, next) {
-		res.render("pages/about");
+		const user = req.session.user;
+		res.render("pages/about", { user, active: "/about" });
 	}
 	contact(req, res, next) {
-		res.render("pages/contact");
+		const user = req.session.user;
+		res.render("pages/contact", { user, active: "/contact" });
 	}
 
 	async tours(req, res, next) {
+		const user = req.session.user;
 		const tours = await Tour.find({ isActive: 1 }).exec();
 		console.log(tours);
-		res.render("pages/tours", { tours, baseUrl: config.baseUrl });
+		res.render("pages/tours", { tours, baseUrl: config.baseUrl, user, active: "/tours" });
 	}
 
 	async tourDetail(req, res, next) {
+		const user = req.session.user;
 		const tour = await Tour.findOne({ _id: req.params.id }).exec();
 		console.log(tour);
-		res.render("pages/tour-details", { tour, baseUrl: config.baseUrl });
+		res.render("pages/tour-details", { tour, baseUrl: config.baseUrl, user });
 	}
 
 	async bookTour(req, res, next) {

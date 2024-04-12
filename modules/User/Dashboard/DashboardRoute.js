@@ -1,8 +1,7 @@
 const express = require("express");
+const DashboardController = require("./DashboardController");
 const DashboardRoute = express.Router();
 
-DashboardRoute.get("/dashboard", (req, res, next) => {
-	res.render("pages/user/dashboard");
-});
+DashboardRoute.get("/dashboard", DashboardController.index);
 
 module.exports = DashboardRoute;

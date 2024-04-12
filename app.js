@@ -53,8 +53,8 @@ app.use("/account", AuthGuard, AuthAdmin, BookingRoute);
 app.use("/account/tours", AuthGuard, AuthAdmin, TourRoute);
 
 //User Account Routes
-app.use("/user", UserDashboardRoute);
-app.use("/user", UserBookingRoute);
+app.use("/user", AuthGuard, AuthUser, UserDashboardRoute);
+app.use("/user", AuthGuard, AuthUser, UserBookingRoute);
 
 //import graphql
 async function startApp(app) {
@@ -65,6 +65,10 @@ async function startApp(app) {
 
 	await server.start(); // Wait for the server to be ready
 	app.use("/graphql", expressMiddleware(server)); // Register the middleware after server starts
+
+	app.use("*", (req, res, next) => {
+		res.render("pages/404");
+	});
 
 	app.listen(config.port, () => {
 		console.log("Apollo is running");

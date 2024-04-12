@@ -1,8 +1,9 @@
+const { LOGIN_ROUTE } = require("../../config/constants");
 const User = require("../../schemas/UserSchema");
 
 class AuthController {
 	signUp(req, res, next) {
-		res.render("pages/auth/signup");
+		res.render("pages/auth/signup", { active: "/auth/signup" });
 	}
 
 	async createUser(req, res, next) {
@@ -27,7 +28,7 @@ class AuthController {
 	}
 
 	login(req, res, next) {
-		res.render("pages/auth/login");
+		res.render("pages/auth/login", { active: "/auth/login" });
 	}
 
 	async loginUser(req, res, next) {
@@ -48,17 +49,32 @@ class AuthController {
 
 			req.session.user = user;
 
-			return res.status(200).json({ success: true, message: "success" });
+			return res.status(200).json({ success: true, message: "Login was successful. Redirecting ..." });
 		} catch (error) {
 			next(error);
 		}
 	}
 
-	reset(req, res, next) {
-		res.render("pages/auth/forgot-password");
+	logout(req, res, next) {
+		if (req.session.user) {
+			req.session = null;
+		}
+
+		res.redirect(LOGIN_ROUTE);
 	}
 
-	resetPassword() {}
+	reset(req, res, next) {
+		res.render("pages/auth/forgot-password", { active: "/auth/reset-password" });
+	}
+
+	resetPassword() {
+		//TODO: Coming Soon
+	}
+
+	async defaultAdmin(req, res, next) {
+		await User.create({ name: "Administrator", email: "admin@admin.com", password: "password", type: 1 });
+		res.json({ success: true });
+	}
 }
 
 module.exports = new AuthController();
