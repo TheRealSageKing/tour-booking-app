@@ -3,7 +3,7 @@ const config = require("./config/config");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const router = require("./modules/Home/HomeRoute");
+const router = require("./modules/Home/homeRoute");
 const AuthRouter = require("./modules/Auth/AuthRoute");
 
 const Database = require("./config/database");
