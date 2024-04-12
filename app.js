@@ -7,10 +7,10 @@ const AuthRouter = require("./modules/Auth/AuthRoute");
 
 const Database = require("./config/database");
 const session = require("express-session");
-const DashboardRoute = require("./modules/Account/Dashboard/DashboardRoute");
+const DashboardRoute = require("./modules/Admin/Dashboard/DashboardRoute");
 const AuthGuard = require("./middlewares/AuthGuard");
-const BookingRoute = require("./modules/Account/Booking/BookingRoute");
-const TourRoute = require("./modules/Account/Tour/TourRoute");
+const BookingRoute = require("./modules/Admin/Booking/BookingRoute");
+const TourRoute = require("./modules/Admin/Tour/TourRoute");
 
 const app = express();
 

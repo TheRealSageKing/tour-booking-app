@@ -24,6 +24,13 @@ class HomeController {
 		console.log(tour);
 		res.render("pages/tour-details", { tour, baseUrl: config.baseUrl });
 	}
+
+	async bookTour(req, res, next) {
+		if (!req.session.user) {
+			return res.redirect("/auth/login?redirect=/book-tour");
+		}
+		res.render("pages/book-tour", { tours });
+	}
 }
 
 module.exports = new HomeController();
