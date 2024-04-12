@@ -18,6 +18,12 @@ class HomeController {
 		console.log(tours);
 		res.render("pages/tours", { tours, baseUrl: config.baseUrl });
 	}
+
+	async tourDetail(req, res, next) {
+		const tour = await Tour.findOne({ _id: req.params.id }).exec();
+		console.log(tour);
+		res.render("pages/tour-details", { tour, baseUrl: config.baseUrl });
+	}
 }
 
 module.exports = new HomeController();
