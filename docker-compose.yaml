@@ -7,6 +7,20 @@ services:
       - "5000:5000" # Map container port 3000 to host port 3000
     volumes:
       - ./:/app # Mount your project directory to /app inside the container
+  mongodb:
+    image: mongo:latest # Use official mongo image
+    ports:
+      - "27017:27017" # Map container port 27017 to host port 27017 (MongoDB default)
+    volumes:
+      - mongo-data:/data/db
+  redis:
+    image: redis:latest # Use official Redis image
+    ports:
+      - "6379:6379" # Map container port 6379 to host port 6379 (Redis default)
+    volumes:
+      - redis-data:/data
 
 volumes:
   tour-world: # Optional volume to persist data (modify as needed)
+  redis-data: # Optional volume for Redis data
+  mongo-data: # Optional volume for MongoDB data
