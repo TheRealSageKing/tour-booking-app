@@ -7,7 +7,7 @@ class BookingController {
 		if (!req.session.user) {
 			return res.redirect("/auth/login?redirect=" + encodeURIComponent(req.originalUrl));
 		}
-		res.render("pages/user/book-tour", { active: "/user/book-tour" });
+		res.render("pages/user/book-tour", { active: "/user/book-tour", user: req.session.user });
 	}
 
 	//creates a new booking
@@ -43,7 +43,7 @@ class BookingController {
 		}
 
 		const bookings = await Booking.find({ user: user._id }).populate("user tourType");
-		res.render("pages/user/bookings", { bookings, active: "/user/bookings" });
+		res.render("pages/user/bookings", { bookings, active: "/user/bookings", user });
 	}
 }
 

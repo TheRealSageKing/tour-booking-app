@@ -70,7 +70,7 @@ async function startApp(app) {
 	await server.start(); // Wait for the server to be ready
 	app.use("/graphql", expressMiddleware(server)); // Register the middleware after server starts
 
-	// app.use(ErrorHandler);
+	app.use(ErrorHandler);
 
 	app.use("*", (req, res, next) => {
 		res.render("pages/404", { active: "" });
