@@ -2,12 +2,14 @@ const express = require("express");
 const config = require("./config/config");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const session = require("express-session");
+const redisClient = require("redis").createClient();
+const RedisStore = require("connect-redis").default;
 
 const HomeRoute = require("./modules/Home/HomeRoute");
 const AuthRouter = require("./modules/Auth/AuthRoute");
 
 const Database = require("./config/database");
-const session = require("express-session");
 const DashboardRoute = require("./modules/Admin/Dashboard/DashboardRoute");
 const UserDashboardRoute = require("./modules/User/Dashboard/DashboardRoute");
 const AuthGuard = require("./middlewares/AuthGuard");
@@ -21,19 +23,21 @@ const schema = require("./graphql/schema");
 const resolvers = require("./graphql/resolver");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
+const ErrorHandler = require("./middlewares/ErrorHandler");
 
 const app = express();
 
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+redisClient.connect().catch(console.error);
+
 app.use(
 	session({
+		store: new RedisStore({ client: redisClient }),
 		secret: config.session_secret,
-		resave: false,
-		saveUninitialized: false,
 		cookie: {
-			secure: config.environment == "production" || false,
 			maxAge: 3600000, // 1hour,
 		},
 	})
@@ -66,8 +70,10 @@ async function startApp(app) {
 	await server.start(); // Wait for the server to be ready
 	app.use("/graphql", expressMiddleware(server)); // Register the middleware after server starts
 
+	// app.use(ErrorHandler);
+
 	app.use("*", (req, res, next) => {
-		res.render("pages/404");
+		res.render("pages/404", { active: "" });
 	});
 
 	app.listen(config.port, () => {
