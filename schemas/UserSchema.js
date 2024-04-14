@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const argon2 = require("argon2");
+const redisClient = require("redis").createClient();
+const session = require("express-session");
+const RedisStore = require("connect-redis").default;
+
+// Initialize RedisStore with express-session
+const redisStore = new RedisStore({ client: redisClient });
 
 const UserSchema = new mongoose.Schema({
 	name: { type: String, required: true },
@@ -10,17 +16,36 @@ const UserSchema = new mongoose.Schema({
 	updatedAt: { type: Date, default: () => Date.now() },
 });
 
-UserSchema.pre("save", function (next) {
+UserSchema.pre("save", async function (next) {
 	if (this.isModified("password")) {
-		const saltHash = bcrypt.genSaltSync(10);
-		this.password = bcrypt.hashSync(this.password, saltHash);
+		this.password = await argon2.hash(this.password);
 		next();
 	}
 
 	next();
 });
-UserSchema.methods.comparePassword = function (plainPassword, callback) {
-	return callback(null, bcrypt.compareSync(plainPassword, this.password));
+
+UserSchema.pre("remove", async function (next) {
+	if (this._id && redisStore) {
+		const sessionId = "sess:" + this._id.toString(); // Assuming session IDs are stored in the format 'sess:sessionId'
+
+		// Delete session from Redis using session ID
+		await new Promise((resolve, reject) => {
+			redisClient.del(sessionId, (err, result) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			});
+		});
+	}
+
+	next();
+});
+
+UserSchema.methods.comparePassword = async function (plainPassword, callback) {
+	return callback(null, argon2.verify(this.password, plainPassword));
 };
 
 const User = mongoose.model("User", UserSchema);
