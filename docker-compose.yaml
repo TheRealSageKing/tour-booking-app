@@ -1,26 +1,35 @@
 version: "3.9"
 
 services:
-  tour-world:
-    build: .
-    ports:
-      - "5000:5000" # Map container port 3000 to host port 3000
-    volumes:
-      - ./:/app # Mount your project directory to /app inside the container
-  mongodb:
+  mongo_db:
+    container_name: mongo
     image: mongo:latest # Use official mongo image
-    ports:
-      - "27017:27017" # Map container port 27017 to host port 27017 (MongoDB default)
     volumes:
-      - mongo-data:/data/db
+      - mongo-data:/data/db # Optional volume for MongoDB data
+    restart: always
+
+  tour-world:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tour-booking-app
+    ports:
+      - 5001:5001 # Map container port 3000 to host port 3000
+    depends_on:
+      - redis # Wait for Redis to be ready before starting your application
+      - mongo_db # Wait for MongoDB to be ready before starting your application
+    links:
+      - redis:redis
+    restart: on-failure
+
   redis:
     image: redis:latest # Use official Redis image
     ports:
       - "6379:6379" # Map container port 6379 to host port 6379 (Redis default)
     volumes:
-      - redis-data:/data
+      - redis-data:/data # Optional volume for Redis data
+    restart: unless-stopped
 
 volumes:
-  tour-world: # Optional volume to persist data (modify as needed)
-  redis-data: # Optional volume for Redis data
-  mongo-data: # Optional volume for MongoDB data
+  mongo-data: {}
+  redis-data: {}

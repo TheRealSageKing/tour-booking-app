@@ -3,8 +3,8 @@ const config = require("./config/config");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require("express-session");
-const redisClient = require("redis").createClient();
 const RedisStore = require("connect-redis").default;
+const redisClient = require("./config/redisClient");
 
 const HomeRoute = require("./modules/Home/HomeRoute");
 const AuthRouter = require("./modules/Auth/AuthRoute");
@@ -30,8 +30,6 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-redisClient.connect().catch(console.error);
 
 app.use(
 	session({

@@ -9,11 +9,6 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Cleanup build stage
-FROM node:18-alpine
-
-WORKDIR /app
-
 # Copy entire project directory
 COPY . .
 
